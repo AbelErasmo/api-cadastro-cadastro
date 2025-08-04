@@ -9,7 +9,7 @@ describe('POST /api/empresa', () => {
         nome: 'Empresa Teste',
         cnpj: '12345678000199',
         telefone: '11999999999',
-        email: 'teste@empresa.com'
+        email: 'tester@empresa.com'
       });
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty('nome', 'Empresa Teste');

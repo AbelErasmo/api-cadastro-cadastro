@@ -1,7 +1,7 @@
 
 const criarCampanha = async (db, dados) => {
   const result = await db.execute(
-    "INSERT INTO campanhas (nome, empresa_id, data_inicio, data_fim) VALUES (?, ?, ?, ?)",
+    `INSERT INTO campanhas (nome, empresa_id, data_inicio, data_fim) VALUES (?, ?, ?, ?)`,
     [dados.nome, dados.empresa_id, dados.data_inicio, dados.data_fim]
   );
 
