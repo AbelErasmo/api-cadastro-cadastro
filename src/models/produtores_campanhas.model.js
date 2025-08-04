@@ -1,43 +1,46 @@
 const atribuirProdutor = async (db, dados) => {
-  const [result] = await db.execute(
+  const result = await db.execute(
     `INSERT INTO produtores_campanhas (produtor_id, tecnico_id, campanha_id) VALUES (?, ?, ?)`,
     [dados.produtor_id, dados.tecnico_id, dados.campanha_id]
   );
 
-  const insertId = result?.insertId ?? null;
+  const insertId = result && result[0] && result[0].insertId ? result[0].insertId : null;
 
-  const [linhas] = await db.execute(
+  const linhas = await db.execute(
     `SELECT * FROM produtores_campanhas WHERE id = ?`,
     [insertId]
   );
 
-  return linhas[0];
+  // mysql2 pode retornar [rows, fields] ou apenas um objeto
+  return linhas && linhas[0] && linhas[0][0] ? linhas[0][0] : null;
 };
 
 const transferirProdutor = async (db, { produtor_id, tecnico_antigo_id, tecnico_novo_id, campanha_id }) => {
   // Verifica se o técnico novo pertence à campanha
-  const [tecnicoRows] = await db.execute(
+  const tecnicoRowsResult = await db.execute(
     `SELECT * FROM tecnicos WHERE id = ? AND campanha_id = ?`,
     [tecnico_novo_id, campanha_id]
   );
+  const tecnicoRows = tecnicoRowsResult && tecnicoRowsResult[0] ? tecnicoRowsResult[0] : [];
 
   if (tecnicoRows.length === 0) {
     throw new Error("O técnico novo não pertence à campanha informada.");
   }
 
-  const [result] = await db.execute(
+  const result = await db.execute(
     `UPDATE produtores_campanhas
      SET tecnico_id = ?, data_transferencia = CURRENT_TIMESTAMP
      WHERE produtor_id = ? AND tecnico_id = ? AND campanha_id = ?`,
     [tecnico_novo_id, produtor_id, tecnico_antigo_id, campanha_id]
   );
+  const updateResult = result && result[0] ? result[0] : { affectedRows: 0 };
 
-  if (result.affectedRows === 0) {
+  if (updateResult.affectedRows === 0) {
     throw new Error("Não encontrado ou já transferido.");
   }
 
   // Retorna os dados completos da transferencia do produtor
-  const [dadosTransferencia] = await db.execute(`
+  const dadosTransferenciaResult = await db.execute(`
     SELECT 
       pc.id,
       p.nome AS nome_produtor,
@@ -54,7 +57,7 @@ const transferirProdutor = async (db, { produtor_id, tecnico_antigo_id, tecnico_
     WHERE pc.produtor_id = ? AND pc.campanha_id = ?
   `, [tecnico_antigo_id, produtor_id, campanha_id]);
 
-  return dadosTransferencia[0];
+  return dadosTransferenciaResult && dadosTransferenciaResult[0] && dadosTransferenciaResult[0][0] ? dadosTransferenciaResult[0][0] : null;
 };
 
 export { transferirProdutor, atribuirProdutor };

@@ -20,16 +20,18 @@ dbConnection();
 
 /**
  * Definindo o uso de rotas no servidor
- */ 
-app.use('/empresas', empresaRoutes);
-app.use('/camapanhas', campanhaRoutes);
-app.use('/produtores', produtorRoutes);
-app.use('/tecnicos', tecnicoRoutes);
+ */
+app.use("/empresas", empresaRoutes);
+app.use("/campanhas", campanhaRoutes);
+app.use("/produtores", produtorRoutes);
+app.use("/tecnicos", tecnicoRoutes);
 
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("<h1>Rota padrão</h1>");
+  res.send(
+    "<h1 style='color:#fff; text-align: center; margin-top: 10rem; background-color: green; padding: 4rem'>API de Cadastro de Empresas de Agricultura</h1>"
+  );
 });
 
 app.listen(PORT, () => {

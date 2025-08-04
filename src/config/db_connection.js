@@ -11,6 +11,7 @@ const dbConnection = () => {
         user: "root",
         password: "",
         database: "empresa",
+        charset: 'utf8mb4',
         port: 3306
     });
     

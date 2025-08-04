@@ -6,28 +6,24 @@ beforeEach(async () => {
   await setupTestDB();
 });
 
-describe('POST /empresas', () => {
-  it('deve cadastrar uma empresa com sucesso', async () => {
+describe('POST /tecnicos', () => {
+  it('deve cadastrar um técnico com sucesso', async () => {
     const response = await request(app)
-      .post('/empresas')
+      .post('/tecnicos')
       .send({
-        nome: 'Empresa Teste',
-        cnpj: '12345678000199',
-        telefone: '11999999999',
-        email: 'teste@empresa.com'
+        nome: 'Técnico Teste',
+        campanha_id: 1
       });
     expect(response.statusCode).toBe(201);
-    expect(response.body).toHaveProperty('nome', 'Empresa Teste');
+    expect(response.body).toHaveProperty('nome', 'Técnico Teste');
   });
 
   it('deve retornar erro se faltar campo obrigatório', async () => {
     const response = await request(app)
-      .post('/empresas')
+      .post('/tecnicos')
       .send({
         nome: '',
-        cnpj: '',
-        telefone: '',
-        email: ''
+        campanha_id: ''
       });
     expect(response.statusCode).toBe(400);
     expect(response.body).toHaveProperty('erro');

@@ -43,10 +43,15 @@ export const postAtribuirProdutor = async (req, res) => {
       campanha_id,
     });
 
+    if (relacionamento) {
+      // Retorna o relacionamento directamente, conforme indicado no desafio
+      res.status(201).json(relacionamento);
+    } else {
+      res.status(500).json({ erro: "Falha ao atribuir produtor." });
+    }
+
     res.status(201).json({
-      mensagem: "Produtor atribuído com sucesso.",
-      relacionamento,
-    });
+      mensagem: "Produtor atribuído com sucesso.", relacionamento});
   } catch (err) {
     console.error("Erro ao atribuir produtor:", err);
     res.status(500).json({ erro: "Erro interno ao atribuir produtor." });
@@ -70,10 +75,8 @@ export const putTransferirProdutor = async (req, res) => {
       campanha_id,
     });
 
-    res.status(200).json({
-      mensagem: "Produtor transferido com sucesso.",
-      resultado,
-    });
+    // Retorna o resultado diretamente, conforme esperado pelo teste
+    res.status(200).json(resultado);
   } catch (err) {
     console.error("Erro ao transferir produtor:", err);
     res

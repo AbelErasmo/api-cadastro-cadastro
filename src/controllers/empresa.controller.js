@@ -3,7 +3,7 @@ import criarEmpresa from "../models/empresa.model.js";
 
 const postEmpresa = async (req, res) => {
   const { nome, cnpj, telefone, email } = req.body;
-
+  await criarEmpresa
   if (!nome || !cnpj || !telefone || !email) {
     return res.status(400).json({ erro: "Todos os campos são obrigatórios." });
   }

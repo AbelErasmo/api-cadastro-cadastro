@@ -1,5 +1,5 @@
 import dbConnection from "../config/db_connection.js";
-import criarTecnico from "../models/tecnico.model.js";
+import { criarTecnico, listarProdutoresPorTecnico } from "../models/tecnico.model.js";
 
 const postTecnico = async (req, res) => {
   const { nome, campanha_id } = req.body;
@@ -18,4 +18,17 @@ const postTecnico = async (req, res) => {
   }
 };
 
-export default postTecnico;
+const listarProdutoresPorTecnicos = async (req, res) => {
+  const tecnicoId = req.params.id;
+
+  try {
+    const db = await dbConnection();
+    const produtores = await listarProdutoresPorTecnico (db, tecnicoId);
+    res.status(200).json(produtores);
+  } catch (err) {
+    console.error("Erro ao listar produtores por técnico:", err);
+    res.status(500).json({ erro: "Erro interno ao buscar produtores." });
+  }
+};
+
+export { postTecnico, listarProdutoresPorTecnicos };

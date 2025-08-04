@@ -1,9 +1,10 @@
 import express from 'express';
-import postTecnico from '../controllers/tecnico.controller.js';
+import { postTecnico, listarProdutoresPorTecnicos } from '../controllers/tecnico.controller.js';
 
 const router = express.Router();
 
-router.post('/tecnicos', postTecnico);
+router.post('/', postTecnico);
+router.get('/:id/produtores', listarProdutoresPorTecnicos);
 
 export default router;
 
