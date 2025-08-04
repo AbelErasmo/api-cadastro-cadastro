@@ -91,3 +91,94 @@ npm start ou npm run node
 | GET    | `/tecnicos/:id/produtores`    | Lista produtores de um técnico         |
 
 ---
+
+## 🧪 Como Testar a API
+
+Para testar os endpoints da API pode ser feito usando  **Postman** ou via **cURL** no terminal.
+
+### 1. Testes com Postman
+
+- Importe um novo request no Postman.
+- Configure a URL base: `http://localhost:3000`
+- Use os seguintes exemplos:
+
+#### Criar uma empresa
+```http
+POST /empresas
+Content-Type: application/json
+
+{
+  "nome": "Empresa Teste",
+  "cnpj": "12345678000199",
+  "telefone": "21999999999",
+  "email": "contato@empresa.com"
+}
+```
+
+#### Criar uma campanha
+```http
+POST /campanhas
+Content-Type: application/json
+
+{
+  "nome": "Campanha Safra 2025",
+  "empresa_id": 1,
+  "data_inicio": "2025-08-01",
+  "data_fim": "2025-08-31"
+}
+```
+
+#### Atribuir produtor a técnico
+```http
+POST /produtores/atribuir
+Content-Type: application/json
+
+{
+  "produtor_id": 1,
+  "tecnico_id": 1,
+  "campanha_id": 1
+}
+```
+
+#### Transferir produtor
+```http
+PUT /produtores/transferir
+Content-Type: application/json
+
+{
+  "produtor_id": 1,
+  "tecnico_antigo_id": 1,
+  "tecnico_novo_id": 2,
+  "campanha_id": 1
+}
+```
+
+#### Listar produtores por técnico
+```http
+GET /tecnicos/1/produtores
+```
+
+---
+
+### 2. Testes com cURL
+
+Pode também pode usar cURL no terminal:
+
+```bash
+curl -X POST http://localhost:3000/empresas \
+-H "Content-Type: application/json" \
+-d '{"nome":"Empresa Teste","cnpj":"12345678000199","telefone":"21999999999","email":"contato@empresa.com"}'
+```
+
+---
+
+### 3. Testes Automatizados
+
+O projecto inclui também testes automatizados através de Jest:
+
+```bash
+npm test
+```
+Certifique-se de que a base de dados de teste está configurada correctamente e que os dados são preparados com `setupTestDB`.
+
+---
